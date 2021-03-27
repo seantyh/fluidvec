@@ -1,4 +1,5 @@
 import pickle
+from pathlib import Path
 
 class Vocabulary:
     def __init__(self):
@@ -51,3 +52,18 @@ class Vocabulary:
         loaded.freq = freq
         loaded.make_rev_vocab()
         return loaded
+    
+class VocabSet:
+    def __init__(self, compo_v, char_v, word_v):
+        self.compo_vocab = compo_v
+        self.char_vocab = char_v
+        self.word_vocab = word_v
+        
+    @classmethod
+    def load(cls, base_dir=None):
+        if not base_dir:
+            base_dir = Path(__file__).parent / "../../data"
+        compo_vocab = Vocabulary.load(base_dir / "compo_vocab.pkl")
+        char_vocab = Vocabulary.load(base_dir / "char_vocab.pkl")
+        word_vocab = Vocabulary.load(base_dir / "word_vocab.pkl")
+        return VocabSet(compo_vocab, char_vocab, word_vocab)

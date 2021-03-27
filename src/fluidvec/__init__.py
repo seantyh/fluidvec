@@ -1,2 +1,2 @@
 from .preproc import *
-from .vocab import Vocabulary
+from .vocab import Vocabulary, VocabSet
