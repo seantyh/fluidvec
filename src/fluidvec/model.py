@@ -58,15 +58,24 @@ class FluidVecSG(nn.Module):
     def get_prediction_vector(self, entry):
         compo_vec = self.get_compo_vector(entry)
         char_vec = self.get_char_vector(entry)
+        n_compo = len(entry["compos"])
+        n_char = len(entry["chars"])
+        pred_vec = (compo_vec + char_vec) / (n_compo + n_char)
         if (compo_vec+char_vec).norm() < 1e-5:
-            raise ValueError("why??")
-        return compo_vec + char_vec
+            print("zero pred vec, why??")
+        return pred_vec
 
     def get_char_vector(self, entry):
-        return self.build_embedding(entry["chars"], self.char_emb)
+        if not entry["chars"]:
+            return self.build_embedding([1], self.char_emb)
+        else:
+            return self.build_embedding(entry["chars"], self.char_emb)
 
     def get_compo_vector(self, entry):
-        return self.build_embedding(entry["compos"], self.compo_emb)
+        if not entry["compos"]:
+            return self.build_embedding([1], self.compo_emb)
+        else:
+            return self.build_embedding(entry["compos"], self.compo_emb)
 
     def build_embedding(self, idx_list, emb):
         assert max(x for x in idx_list) < emb.num_embeddings                
