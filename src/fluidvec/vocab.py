@@ -67,3 +67,8 @@ class VocabSet:
         char_vocab = Vocabulary.load(base_dir / "char_vocab.pkl")
         word_vocab = Vocabulary.load(base_dir / "word_vocab.pkl")
         return VocabSet(compo_vocab, char_vocab, word_vocab)
+    
+    def save(self, base_dir):
+        self.word_vocab.save(base_dir / "word_vocab.pkl")
+        self.char_vocab.save(base_dir / "char_vocab.pkl")
+        self.compo_vocab.save(base_dir / "compo_vocab.pkl")
